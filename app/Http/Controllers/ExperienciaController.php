@@ -13,11 +13,16 @@ class ExperienciaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = User::with(['experiencias'])->findOrFail(Auth::id());
-        // Esto busca: resources/views/experiencialaboral/index.blade.php
-        return view('experiencialaboral.index', compact('user'));
+        $experienciaEdit = null;
+        // Vemos si nos llega un request de editar con el id, si es asi la pasamos para que se pueda editar
+        if ($request->has('edit')) {
+            $experienciaEdit = $user->experiencias->find($request->edit);
+        }
+
+        return view('experiencialaboral.index', compact('user', 'experienciaEdit'));
     }
     /**
      * Show the form for creating a new resource.
@@ -64,9 +69,18 @@ class ExperienciaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Experiencia $experiencia)
+    public function update(Request $request, Experiencia $experiencialaboral)
     {
-        //
+        $data = $request->validate([
+            'empresa' => 'required|string|max:255',
+            'puesto' => 'required|string|max:255',
+            'fecha_inicio' => 'required|date',
+            'fecha_fin' => 'nullable|date',
+            'descripcion' => 'required|string|max:255'
+        ]);
+
+        $experiencialaboral->update($data);
+        return redirect()->back()->with('success', 'Experiencia actualizada');
     }
 
     /**

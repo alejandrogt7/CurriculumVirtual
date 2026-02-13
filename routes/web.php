@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\EducacionController;
 use App\Http\Controllers\ExperienciaController;
+use App\Http\Controllers\HabilidadController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProyectoController;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Casts\AsUri;
 use Illuminate\Support\Facades\Auth;
@@ -13,12 +17,11 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/dashboard', function () {
-        $user = User::with(['perfiles'])->findOrFail(Auth::id());
-        return view('dashboard', compact('user'));
-    })->name('dashboard');
-
+    Route::resource('/perfil', PerfilController::class);
     Route::resource('/experiencialaboral',ExperienciaController::class );
+    Route::resource('/habilidades',HabilidadController::class );
+    Route::resource('/educacion',EducacionController::class );
+    Route::resource('/proyectos',ProyectoController::class );
 
 });
 
