@@ -29,7 +29,6 @@ class EducacionController extends Controller
             'institucion' => 'required|string|max:255',
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'nullable|date',
-            'descripcion' => 'nullable|string',
         ]);
 
         $user = User::findOrFail(Auth::id());

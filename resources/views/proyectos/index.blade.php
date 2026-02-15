@@ -1,96 +1,120 @@
 <x-app-layout>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-                <div class="flex justify-between items-center mb-4 border-b-4 border-indigo-500 pb-2">
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Mi información personal</h1>
-                    
-                    @if($user->perfil)
-                        <div class="flex space-x-3">
-                            <a href="?edit_perfil=1#form-perfil" class="text-indigo-400 text-xl font-bold">✎</a>
-                            
-                            {{-- Botón Eliminar --}}
-                            <form action="{{ route('perfil.destroy', $user->perfil) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 text-xl font-bold">✖</button>
-                            </form>
-                        </div>
-                    @endif
+
+            {{-- MENSAJES DE ÉXITO --}}
+            @if(session('success'))
+            <div class="p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg shadow-sm">
+                {{ session('success') }}
+            </div>
+            @endif
+
+            {{-- LISTADO DE PROYECTOS --}}
+            <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
+                <div class="flex items-center mb-6 border-b-4 border-indigo-500 pb-2">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">Proyectos</h3>
                 </div>
 
-                @if($user->perfil)
-                    <div class="grid grid-cols-2 gap-6">
-                        {{-- Datos del Perfil --}}
-                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                            <h3 class="font-bold text-indigo-400 mb-2">👤 {{ $user->name }}</h3>
-                            <p class="text-white">💼 {{ $user->perfil->profesion }}</p>
-                            <p class="text-gray-300 mt-2 text-sm italic">"{{ $user->perfil->sobre_mi }}"</p>
+                <div class="grid grid-cols-1 gap-4">
+                    {{-- Usamos IF para comprobar si hay datos --}}
+                    @if($user->proyectos->count() > 0)
+
+                    {{-- Usamos FOREACH para recorrerlos --}}
+                    @foreach($user->proyectos as $proyecto)
+                    <div class="p-5 bg-gray-50 dark:bg-gray-700 rounded-xl border-l-8 border-indigo-500 flex justify-between items-center shadow-sm">
+                        <div class="space-y-1">
+                            <h4 class="font-black text-indigo-600 dark:text-indigo-400 text-lg uppercase tracking-tight">
+                                {{ $proyecto->titulo }}
+                            </h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-300 mt-2 italic">
+                                "{{ $proyecto->descripcion }}"
+                            </p>
+                            <div>
+                                <a href="{{ $proyecto->enlace_proyecto }}" target="_blank" class="text-indigo-400 hover:text-indigo-300 text-sm flex items-center font-bold underline">
+                                    🔗 !Pincha aquí para ver mi proyecto!
+                                </a>
+                            </div>
+
+
                         </div>
 
-                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                            <p class="text-white">📞 {{ $user->perfil->telefono ?? 'Sin teléfono' }}</p>
-                            <p class="text-white">📧 {{ $user->email }}</p>
-                            <div class="mt-2 space-y-1">
-                                <a href="{{ $user->perfil->linkedin }}" target="_blank" class="text-indigo-400 text-sm block cursor-pointer">🔗 {{ $user->perfil->linkedin }}</a>
-                                <a href="{{ $user->perfil->github }}" target="_blank" class="text-indigo-400 text-sm block cursor-pointer">🔗 {{ $user->perfil->github }}</a>
-                            </div>
+                        <div class="flex items-center space-x-4 ml-4">
+                            {{-- Botón Editar --}}
+                            <a href="{{ route('proyectos.index', ['edit' => $proyecto->id]) }}"
+                                class="text-indigo-500 hover:text-indigo-700 text-2xl font-bold transition-transform hover:scale-125"
+                                title="Editar">
+                                ✎
+                            </a>
+
+                            {{-- Botón Eliminar --}}
+                            <form action="{{ route('proyectos.destroy', $proyecto) }}" method="POST" onsubmit="return confirm('¿Eliminar este proyecto?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 hover:text-red-700 text-2xl font-bold transition-transform hover:scale-125">
+                                    ✖
+                                </button>
+                            </form>
                         </div>
                     </div>
-                @else
-                    <p class="text-gray-500 italic text-center">Aún no has completado tu perfil profesional.</p>
-                @endif
+                    @endforeach
+
+                    @else
+                    {{-- Mensaje de "vacío" si no hay registros --}}
+                    <div class="text-center py-10 bg-gray-50 dark:bg-gray-700/50 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600">
+                        <p class="text-gray-500 dark:text-gray-400 italic">💼 Aún no has añadido proyectos.</p>
+                        <p class="text-sm text-indigo-500 font-bold mt-1">¡Cuéntanos tus proyectos abajo! 👇</p>
+                    </div>
+                    @endif
+                </div>
             </div>
 
-            
-            <div id="form-perfil" class="p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
-                    {{ request('edit_perfil') ? 'Actualizar Mi Perfil' : 'Crear Perfil Profesional' }}
-                </h3>
+            {{-- 2. FORMULARIO DINÁMICO --}}
+            <div id="formulario" class="p-8 bg-white dark:bg-gray-800 shadow-xl sm:rounded-lg border-t-8 border-indigo-600">
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100">
+                        {{ $proyectoEdit ? '📝 Modificar Proyecto' : '✨ Añadir Nuevo Proyecto' }}
+                    </h3>
+                    <p class="text-sm text-gray-500">Describe tus proyectos y enlaces.</p>
+                </div>
 
-                <form method="POST" 
-                      action="{{ $user->perfil && request('edit_perfil') ? route('perfil.update', $user->perfil) : route('perfil.store') }}" 
-                      class="space-y-4">
+                <form method="POST"
+                    action="{{ $proyectoEdit ? route('proyectos.update', $proyectoEdit) : route('proyectos.store') }}"
+                    class="space-y-6">
                     @csrf
-                    @if($user->perfil && request('edit_perfil'))
-                        @method('PATCH')
+                    @if($proyectoEdit)
+                    @method('PUT')
                     @endif
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="grid grid-cols- md:grid-cols-2 gap-6">
+                        {{-- Proyecto --}}
                         <div>
-                            <x-input-label :value="__('Profesión')" />
-                            <x-text-input name="profesion" type="text" class="mt-1 block w-full" 
-                                :value="old('profesion', $user->perfil->profesion ?? '')" required />
+                            <x-input-label value="Nombre del Proyecto" />
+                            <x-text-input name="titulo" type="text" class="mt-1 block w-full"
+                                :value="old('titulo', $proyectoEdit->titulo ?? '')" required />
                         </div>
-                        <div>
-                            <x-input-label :value="__('Teléfono')" />
-                            <x-text-input name="telefono" type="text" class="mt-1 block w-full" 
-                                :value="old('telefono', $user->perfil->telefono ?? '')" />
-                        </div>
-                        <div>
-                            <x-input-label :value="__('LinkedIn (usuario)')" />
-                            <x-text-input name="linkedin" type="text" class="mt-1 block w-full" 
-                                :value="old('linkedin', $user->perfil->linkedin ?? '')" />
-                        </div>
-                        <div>
-                            <x-input-label :value="__('GitHub (usuario)')" />
-                            <x-text-input name="github" type="text" class="mt-1 block w-full" 
-                                :value="old('github', $user->perfil->github ?? '')" />
-                        </div>
-                    </div>
 
+                        {{-- Enlace del Proyecto --}}
+                        <div>
+                            <x-input-label value="Enlace del Proyecto (opcional)" />
+                            <x-text-input name="enlace_proyecto" type="url" class="mt-1 block w-full"
+                                :value="old('enlace_proyecto', $proyectoEdit->enlace_proyecto ?? '')" />
+                        </div>
+
+                    </div>
+                    {{-- Descripción --}}
                     <div>
-                        <x-input-label :value="__('Sobre mí')" />
-                        <textarea name="sobre_mi" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 rounded-md shadow-sm" rows="3" required>{{ old('sobre_mi', $user->perfil->sobre_mi ?? '') }}</textarea>
+                        <x-input-label value="Descripción del Proyecto" />
+                        <textarea name="descripcion" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 rounded-md shadow-sm" rows="3">{{ old('descripcion', $proyectoEdit->descripcion ?? '') }}</textarea>
                     </div>
-
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-4 pt-4 border-t border-gray-100 dark:border-gray-700">
                         <x-primary-button>
-                            {{ $user->perfil && request('edit_perfil') ? 'Guardar Cambios' : 'Crear Perfil' }}
+                            {{ $proyectoEdit ? '💾 Guardar Cambios' : '🚀 Añadir Proyecto' }}
                         </x-primary-button>
 
-                        @if(request('edit_perfil'))
-                            <a href="{{ url()->current() }}" class="text-sm text-gray-400 hover:underline">Cancelar</a>
+                        @if($proyectoEdit)
+                        <a href="{{ route('proyectos.index') }}" class="text-sm text-gray-500 hover:text-red-500 underline transition-colors">
+                            Cancelar edición
+                        </a>
                         @endif
                     </div>
                 </form>
