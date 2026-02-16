@@ -7,9 +7,8 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProyectoController;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Casts\AsUri;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,11 +17,10 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::resource('/perfil', PerfilController::class);
-    Route::resource('/experiencialaboral',ExperienciaController::class );
-    Route::resource('/habilidades',HabilidadController::class );
-    Route::resource('/educacion',EducacionController::class );
-    Route::resource('/proyectos',ProyectoController::class );
-
+    Route::resource('/experiencialaboral', ExperienciaController::class);
+    Route::resource('/habilidades', HabilidadController::class);
+    Route::resource('/educacion', EducacionController::class);
+    Route::resource('/proyectos', ProyectoController::class);
 });
 
 Route::middleware('auth')->group(function () {
@@ -31,4 +29,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

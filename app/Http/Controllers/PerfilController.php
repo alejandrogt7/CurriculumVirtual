@@ -58,9 +58,11 @@ class PerfilController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Perfile $perfile)
+    public function show($id)
     {
-        //
+        $relacionesCV = ['perfil', 'educaciones', 'experiencias', 'habilidades', 'proyectos'];
+        $user = User::with($relacionesCV)->findOrFail($id);
+        return view('busquedaperfiles.index', compact('user'));
     }
 
     /**

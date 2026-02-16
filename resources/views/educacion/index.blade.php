@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     @empty
-                    {{-- Esto solo se muestra si $user->educaciones está vacío --}}
+                    {{-- Esto solo se muestra si $user->educaciones esta vacio --}}
                     <div class="text-center py-10 bg-gray-50 dark:bg-gray-700/50 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600">
                         <p class="text-gray-500 dark:text-gray-400 italic">🎓 No has añadido ninguna formación académica aún.</p>
                         <p class="text-sm text-indigo-500 font-bold mt-1">¡Utiliza el formulario de abajo para empezar!</p>
