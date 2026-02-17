@@ -33,7 +33,6 @@ Vista optimizada para compartir con diseño profesional estilo **“Indigo & Bol
 |------|------------|
 | Backend | Laravel 11 |
 | Frontend | Tailwind CSS + Blade Components |
-| Interactividad | Alpine.js |
 | Base de Datos | MySQL |
 
 ---
