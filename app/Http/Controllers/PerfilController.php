@@ -25,6 +25,13 @@ class PerfilController extends Controller
         return view('perfil.index', compact('user', 'perfilEdit'));
     }
 
+    public function perfilesUsers()
+    {
+        // Traemos a todos los usuarios que tengan un perfil creado
+        $users = User::with('perfil')->get();
+        return view('busquedaperfiles.index', compact('users'));
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -58,11 +65,16 @@ class PerfilController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($id = null)
     {
-        $relacionesCV = ['perfil', 'educaciones', 'experiencias', 'habilidades', 'proyectos'];
-        $user = User::with($relacionesCV)->findOrFail($id);
-        return view('busquedaperfiles.index', compact('user'));
+        // Si no hay ID, es mi perfil. Si hay ID, es el de otro.
+        $id = $id ?? $userId = Auth::id();
+
+        $user = User::with(['perfil', 'educaciones', 'experiencias', 'habilidades', 'proyectos'])
+            ->findOrFail($id);
+
+        // IMPORTANTE: carpeta 'perfil', archivo 'show'
+        return view('perfil.show', compact('user'));
     }
 
     /**

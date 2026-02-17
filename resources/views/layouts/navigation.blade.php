@@ -27,6 +27,9 @@
                     <x-nav-link :href="route('proyectos.index')" :active="request()->routeIs('proyectos.*')">
                         {{ __('Proyectos') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('busquedaperfiles.index')" :active="request()->routeIs('busquedaperfiles.*')">
+                        {{ __('Perfiles de Usuarios') }}
+                    </x-nav-link>
                 </div>
             </div>
 

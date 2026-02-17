@@ -21,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/habilidades', HabilidadController::class);
     Route::resource('/educacion', EducacionController::class);
     Route::resource('/proyectos', ProyectoController::class);
+    Route::get('/busquedaperfiles', [PerfilController::class, 'perfilesUsers'])->name('busquedaperfiles.index');
 });
 
 Route::middleware('auth')->group(function () {

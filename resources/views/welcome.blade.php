@@ -47,9 +47,8 @@
         </main>
 
         <footer class="mt-8 text-gray-400 text-xs uppercase tracking-widest">
-            &copy; {{ date('Y') }} — Cirrículum Virtual Profesional por Alejandro García
+            &copy; {{ date('Y') }} — Currículum Virtual Profesional por Alejandro García
         </footer>
-
     </div>
 
 </body>
