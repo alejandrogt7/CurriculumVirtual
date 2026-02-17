@@ -1,51 +1,124 @@
-<p align="center">
-  <a href="#" target="_blank">
-    <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="300" alt="Laravel Logo">
-  </a>
-</p>
+# 🚀 CurriculumVirtual
 
-<h1 align="center">CurriculumVirtual 🚀</h1>
-
-<p align="center">
-  <strong>Plataforma de gestión y visualización de perfiles profesionales</strong>
-</p>
-
-<p align="center">
-<img src="https://img.shields.io/badge/Laravel-11-red?style=for-the-badge&logo=laravel" alt="Laravel 11">
-<img src="https://img.shields.io/badge/Tailwind_CSS-3.0-blue?style=for-the-badge&logo=tailwind-css" alt="Tailwind CSS">
-<img src="https://img.shields.io/badge/MySQL-8.0-blue?style=for-the-badge&logo=mysql" alt="MySQL">
-<img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
-</p>
+**CurriculumVirtual** es una plataforma moderna para la creación y gestión de currículums digitales profesionales.  
+Permite centralizar información de contacto, experiencia laboral, formación académica y habilidades bajo una identidad visual coherente y atractiva.
 
 ---
 
-## 📝 Sobre el Proyecto
+## ✨ Funcionalidades
 
-**CurriculumVirtual** es una aplicación web que permite a los usuarios centralizar su trayectoria profesional. El objetivo es ofrecer un espacio donde cada usuario pueda gestionar su información y generar un perfil público con un diseño limpio, profesional y coherente (estilo "Indigo & Bold").
+### 📄 Gestión de CV
+CRUD completo para:
+- Experiencia laboral  
+- Educación  
+- Habilidades  
+- Proyectos  
 
-### 🌟 Funcionalidades Clave
+### 🌐 Directorio de Talentos
+Explora perfiles públicos de otros profesionales registrados en la plataforma.
 
-- **Gestión Integral:** CRUD de Experiencias, Educación, Habilidades y Proyectos.
-- **Perfil Público:** URL única para compartir tu CV online (`/perfil/{id}`).
-- **Explorador de Talentos:** Buscador y lista de todos los profesionales registrados.
-- **Interfaz Coherente:** Estética basada en Laravel Breeze con personalizaciones de bordes marcados e identidad visual propia.
+### 👤 Perfil Público
+Vista optimizada para compartir con diseño profesional estilo **“Indigo & Bold”**.
 
-## 🛠️ Tecnologías
-
-- [Laravel 11](https://laravel.com) - Framework backend.
-- [Tailwind CSS](https://tailwindcss.com) - Framework de estilos.
-- [Alpine.js](https://alpinejs.dev) - Interactividad ligera.
-- [MySQL](https://www.mysql.com) - Base de datos relacional.
+### 🔐 Sistema de Autenticación
+- Registro de usuarios  
+- Inicio de sesión seguro  
+- Gestión de cuentas  
 
 ---
 
-## 🚀 Guía de Instalación
+## 🛠️ Tecnologías Utilizadas
 
-Sigue estos pasos para clonar y ejecutar el proyecto localmente:
+| Área | Tecnología |
+|------|------------|
+| Backend | Laravel 11 |
+| Frontend | Tailwind CSS + Blade Components |
+| Interactividad | Alpine.js |
+| Base de Datos | MySQL |
 
-### 1. Clonar y dependencias
+---
+
+## 🚀 Instalación en Entorno Local
+
+Sigue estos pasos para ejecutar el proyecto en tu máquina:
+
+### 1️⃣ Clonar el repositorio
+
 ```bash
-git clone [https://github.com/tu-usuario/CurriculumVirtual.git](https://github.com/tu-usuario/CurriculumVirtual.git)
+git clone https://github.com/tu-usuario/CurriculumVirtual.git
 cd CurriculumVirtual
+```
+
+---
+
+### 2️⃣ Instalar dependencias
+
+```bash
 composer install
 npm install
+```
+
+---
+
+### 3️⃣ Configurar entorno
+
+```bash
+cp .env.example .env
+```
+
+Generar la clave obligatoria de Laravel:
+
+```bash
+php artisan key:generate
+```
+
+---
+
+### 4️⃣ Configurar base de datos
+
+Asegúrate de configurar correctamente tu base de datos en el archivo `.env`.
+
+Luego ejecuta:
+
+```bash
+php artisan migrate
+```
+
+Esto creará las tablas necesarias:
+- Perfiles
+- Habilidades
+- Experiencia
+- Educación
+- Proyectos
+
+---
+
+### 5️⃣ Compilar assets y ejecutar servidor
+
+```bash
+npm run dev
+php artisan serve
+```
+
+---
+
+## 🌍 Acceso a la Aplicación
+
+Una vez iniciado el servidor, abre en tu navegador:
+
+```
+http://127.0.0.1:8000
+```
+
+---
+
+## 📌 Requisitos Previos
+
+- PHP 8.2+
+- Composer
+- Node.js 18+
+- MySQL
+- Laravel CLI
+
+---
+
